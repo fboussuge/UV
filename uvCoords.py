@@ -1,5 +1,7 @@
 from QUBPythonoccUtils.OCCD_Basic import read_step_file, ask_point_uv2, xyz_from_uv_face, ask_point_uv, face_extreme
+from OCC.Core.BRep import BRep_Tool
 
+sf = 1000.0
 topo = read_step_file('../../../../DATA/SALOME/cyl_face3.step')
 
 faces = [x for x in topo.faces()]
@@ -7,6 +9,10 @@ face = faces[0]
 
 uvrange = face_extreme(face)
 print("uvrange" + str(uvrange))
+
+surface = BRep_Tool().Surface(face)  ### Handle_Geom_Surface
+geom_surface = surface.GetObject()
+
 
 #print(faces)
 
@@ -21,6 +27,8 @@ print("uvrange" + str(uvrange))
 with open('/home/flavien/0-WORK/DATA/SALOME/cyl_face3.txt', 'r') as f:
     lines = f.read().splitlines()
 
+ur = uvrange[1] - uvrange[0]
+vr = uvrange[3] - uvrange[2]
 lex = []
 for line in lines:
     spline = line[1:-1].split(', ')
@@ -28,13 +36,16 @@ for line in lines:
 
     shptype = spline[5]
     if shptype == 'VERTEX' or shptype == 'EDGE' or shptype == 'FACE':
-        xyz = (float(spline[1]), float(spline[2]), float(spline[3]))
+        xyz = (float(spline[1])*sf, float(spline[2])*sf, float(spline[3])*sf)
         uv = ask_point_uv(xyz, face, uvrange)
+
+        uv = (uv[0]/ur, uv[1]/vr)
+
         print(spline[0])
         print(xyz)
         print(uv)
 
-        ex = [spline[0], spline[1], spline[2], spline[3], spline[4], spline[5], str(uv[0]*50), str(uv[1])]
+        ex = [spline[0], spline[1], spline[2], spline[3], spline[4], spline[5], str(uv[0]), str(uv[1])]
     else:
         ex = spline
     lex.append(ex)
