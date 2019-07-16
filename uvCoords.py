@@ -2,7 +2,7 @@ from QUBPythonoccUtils.OCCD_Basic import read_step_file, ask_point_uv2, xyz_from
 from OCC.Core.BRep import BRep_Tool
 
 sf = 1000.0
-topo = read_step_file('../../../../DATA/SALOME/cyl_face3.step')
+topo = read_step_file('../../../../DATA/SALOME/cyl_face19.step')
 
 faces = [x for x in topo.faces()]
 face = faces[0]
@@ -24,7 +24,7 @@ geom_surface = surface.GetObject()
 #print(uv)
 
 #read the text file containing the nodes
-with open('/home/flavien/0-WORK/DATA/SALOME/cyl_face3.txt', 'r') as f:
+with open('/home/flavien/0-WORK/DATA/SALOME/cyl_face19_5.txt', 'r') as f:
     lines = f.read().splitlines()
 
 ur = uvrange[1] - uvrange[0]
@@ -59,6 +59,6 @@ print("toto")
 print(xyz.Coord())
 
 # export to a text file
-with open('/home/flavien/0-WORK/DATA/SALOME/cyl_face3_m.txt', 'w') as f:
+with open('/home/flavien/0-WORK/DATA/SALOME/cyl_face19_5_m.txt', 'w') as f:
     for item in lex:
         f.write("%s\n" % str(item))

@@ -1,7 +1,7 @@
 import xml.etree.cElementTree as ET
 
 #read the text file containing the nodes with the uv coordinates
-with open('/home/flavien/0-WORK/DATA/SALOME/cyl_face3_m.txt', 'r') as f:
+with open('/home/flavien/0-WORK/DATA/SALOME/cyl_face19_5_m.txt', 'r') as f:
     lines = f.read().splitlines()
 
 dnodes = dict()
@@ -21,7 +21,7 @@ for line in lines:
 
 
 #read the xml file and replace the XYZ coordinates by the UV coordinates
-xmlfile = '/home/flavien/0-WORK/DATA/SALOME/cyl_face3.xml'
+xmlfile = '/home/flavien/0-WORK/DATA/SALOME/cyl_5.xml'
 
 
 tree = ET.parse(xmlfile)
@@ -64,10 +64,11 @@ for triangle in cells:
     v1 = int(triangle.get('v1'))
     v2 = int(triangle.get('v2'))
     if ((v0 in dnodes) and (v1 in dnodes) and (v2 in dnodes)):
-        lcellsToKeep.append(triangle)
         triangle.set('v0', str(dids[v0]))
         triangle.set('v1', str(dids[v1]))
         triangle.set('v2', str(dids[v2]))
+        triangle.set('index', str(len(lcellsToKeep)))
+        lcellsToKeep.append(triangle)
     else:
         lcellsToRemove.append(triangle)
 
@@ -78,4 +79,4 @@ for triangle in lcellsToRemove:
     #print(vertex.attrib)
     cells.remove(triangle)
 
-tree.write('/home/flavien/0-WORK/DATA/SALOME/cyl_face3_m.xml')
+tree.write('/home/flavien/0-WORK/DATA/SALOME/cyl_face19_5_m.xml')

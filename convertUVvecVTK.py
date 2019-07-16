@@ -6,7 +6,7 @@ import numpy as np
 sf = 1000.0
 
 #read vtu file containing the vector field in UV coordinates
-mesh = meshio.read('/home/flavien/0-WORK/RESULTS/cyl_face3_u_cross0000000.vtu')
+mesh = meshio.read('/home/flavien/0-WORK/RESULTS/cyl_face19_u_cross0000000.vtu')
 
 print(mesh.points)
 #print(mesh.cells)
@@ -15,14 +15,14 @@ print(mesh.points)
 
 
 #read the step file to get the corresponding face
-topo = read_step_file('../../../../DATA/SALOME/cyl_face3.step')
+topo = read_step_file('../../../../DATA/SALOME/cyl_face19.step')
 
 faces = [x for x in topo.faces()]
 face = faces[0]
 
 
 #read the text file containing the XYZ coordinates of the nodes
-with open('/home/flavien/0-WORK/DATA/SALOME/cyl_face3.txt', 'r') as f:
+with open('/home/flavien/0-WORK/DATA/SALOME/cyl_face19_20.txt', 'r') as f:
     lines = f.read().splitlines()
 
 lxyz = []
@@ -43,7 +43,9 @@ ur = uvrange[1] - uvrange[0]
 vr = uvrange[3] - uvrange[2]
 
 ndata = []
-for i, pt_data in enumerate(mesh.point_data['f_59']):
+ldatakeys = list(mesh.point_data.keys())
+
+for i, pt_data in enumerate(mesh.point_data[ldatakeys[0]]):
     pt1_2d = mesh.points[i]
     #print("pt1_2d")
     #print(pt1_2d)
@@ -92,13 +94,13 @@ for x in ndata:
     print(x)
 
 #print(ndata)
-mesh.point_data['f_59'] = np.array(ndata)
+mesh.point_data['f_10'] = np.array(ndata)
 for i,elt in enumerate(lxyz):
     mesh.points[i] = np.array(elt)
 
 #print(mesh.points)
 
-meshio.write('/home/flavien/0-WORK/RESULTS/toto.vtk', mesh)
+meshio.write('/home/flavien/0-WORK/RESULTS/face19_20_0.vtk', mesh)
 
 #xyz = xyz_from_uv_face([5.834386356666759, 0.0], face)
 #print("toto")
