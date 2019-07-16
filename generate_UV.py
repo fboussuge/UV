@@ -125,27 +125,26 @@ def export_uv_coordinates_to_xml(xmlfile, xmlfileexp, luvs):
     tree.write(xmlfileexp)
 
 
-#############################################################
-####     Calculate Cross Fields with Fenics             #####
-#############################################################
-
 if __name__ == "__main__":
-    # 1_IMPORT THE STEP FILE
-    facepath = '../../../../DATA/SALOME/cyl_face19.step'
-    face = get_face_from_step(facepath)
+    face_ids = [3]  # list of ids of faces
 
-    # GET THE MESH NODES
-    meshpath = '/home/flavien/0-WORK/DATA/SALOME/cyl_face19_5.txt'
-    nodes = get_nodes_from_salome(meshpath)
+    for faceid in face_ids:
+        # 1_IMPORT THE STEP FILE
+        facepath = '../../../../DATA/SALOME/cyl_face' + str(faceid) + '.step'
+        face = get_face_from_step(facepath)
 
-    # PROJECT NODES TO GET UV COORDINATES
-    nodesUV = get_uv_coordinates(nodes, face)
+        # GET THE MESH NODES
+        meshpath = '/home/flavien/0-WORK/DATA/SALOME/cyl_face' + str(faceid) + '.txt'
+        nodes = get_nodes_from_salome(meshpath)
 
-    # EXPORT TO A TXT FILE
-    # txtpath = '/home/flavien/0-WORK/DATA/SALOME/cyl_face19_5_m.txt'
-    # export_uv_coordinates(txtpath, nodesUV)
+        # PROJECT NODES TO GET UV COORDINATES
+        nodesUV = get_uv_coordinates(nodes, face)
 
-    # EXPORT TO XML FILE
-    xmlpath = '/home/flavien/0-WORK/DATA/SALOME/cyl_5.xml'
-    xmlexportpath = '/home/flavien/0-WORK/DATA/SALOME/cyl_face19_5_m.xml'
-    export_uv_coordinates_to_xml(xmlpath, xmlexportpath, nodesUV)
+        # EXPORT TO A TXT FILE
+        # txtpath = '/home/flavien/0-WORK/DATA/SALOME/cyl_face19_5_m.txt'
+        # export_uv_coordinates(txtpath, nodesUV)
+
+        # EXPORT TO XML FILE
+        xmlpath = '/home/flavien/0-WORK/DATA/SALOME/cyl_5.xml'
+        xmlexportpath = '/home/flavien/0-WORK/DATA/SALOME/cyl_face' + str(faceid) + '.xml'
+        export_uv_coordinates_to_xml(xmlpath, xmlexportpath, nodesUV)
