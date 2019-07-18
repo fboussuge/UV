@@ -83,7 +83,7 @@ def calculate_xyz_from_uv(lxyz, face, mesh, vtkfile):
         pt2_3d = xyz_from_uv_face_unnormlized(pt2_2d, face)
         pt2_3d = ((pt2_3d.X()/sf, pt2_3d.Y()/sf, pt2_3d.Z()/sf))
         # print("pt2_3d")
-        # print(pt2_3d)
+        #print(pt2_3d)
 
         # ########## debug
         # print("aaaa")
@@ -115,21 +115,24 @@ def calculate_xyz_from_uv(lxyz, face, mesh, vtkfile):
 
 
 if __name__ == "__main__":
-    face_ids = [3]  # list of ids of faces
+    face_ids = [39]  # list of ids of faces
+    obj_name = 'dim'
+    folder_name = 'DIM'
+
     for faceid in face_ids:
         # 1_IMPORT THE STEP FILE
-        facepath = '../../../../DATA/SALOME/cyl_face' + str(faceid) + '.step'
+        facepath = '../../../../DATA/SALOME/' + obj_name + '_face' + str(faceid) + '.step'
         face = get_face_from_step(facepath)
 
         # READ THE XYZ coordinates
-        txtpath = '/home/flavien/0-WORK/DATA/SALOME/cyl_face' + str(faceid) + '.txt'
+        txtpath = '/home/flavien/0-WORK/DATA/SALOME/' + obj_name + '_face' + str(faceid) + '.txt'
         lxyz = get_xyz_coordinates(txtpath)
 
         # READ THE VTU FILES
         for i in range(0, 4):
-            vtupath = '/home/flavien/0-WORK/RESULTS/CYL/cyl_face' + str(faceid) + '_cross' + str(i) + '000000.vtu'
+            vtupath = '/home/flavien/0-WORK/RESULTS/'+ folder_name +'/' + obj_name + '_face' + str(faceid) + '_cross' + str(i) + '000000.vtu'
             mesh = read_vector_result(vtupath)
 
             # CALCULATE XYZ COORDINATES
-            vtkpath = '/home/flavien/0-WORK/RESULTS/CYL/cyl_face' + str(faceid) + '_' + str(i) + '.vtk'
+            vtkpath = '/home/flavien/0-WORK/RESULTS/'+ folder_name +'/' + obj_name + '_face' + str(faceid) + '_' + str(i) + '.vtk'
             calculate_xyz_from_uv(lxyz, face, mesh, vtkpath)
